@@ -59,7 +59,7 @@ class Data(object):
         else:
             begin = self._batch_length[i-1]
         batch_index = list(range(begin,self._batch_length[i]))#batch_index 相当于 [user_id-1]
-        np.random.shuffle(batch_index)
+        #np.random.shuffle(batch_index)
         for idx in batch_index:
             user = self._user_input[idx]
             item = self._item_input[idx]
