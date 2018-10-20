@@ -33,8 +33,6 @@ def parse_args():
                         help='Number of negative instances to pair with a positive instance.')
     parser.add_argument('--lr', type=float, default=0.01,
                         help='Learning rate.')
-    parser.add_argument('--pretrain', type=int, default=1,
-                        help='0: No pretrain, 1: Pretrain with updating FISM variables, 2:Pretrain with fixed FISM variables.')
     return parser.parse_args()
 
 
@@ -75,15 +73,6 @@ class FISM:
             self.bias_i = tf.nn.embedding_lookup(self.bias,self.item_input)
             self.coeff = tf.pow(self.num_idx, -tf.constant(self.alpha,tf.float32,[1]))
             self.output = tf.sigmoid(self.coeff*tf.expand_dims(tf.reduce_sum(self.embedding_p*self.embedding_q,1),1)+self.bias_i)
-
-            # self.embedding_P = tf.Variable(tf.truncated_normal(shape=[self.num_items + 1, self.embedding_size], mean=0.0, stddev=0.01),name='embedding_P', dtype=tf.float32)
-            # self.embedding_Q = tf.Variable(tf.truncated_normal(shape=[self.num_items + 1, self.embedding_size], mean=0.0, stddev=0.01), name='embedding_Q', dtype=tf.float32)
-            # self.bias = tf.Variable(tf.zeros(self.num_items + 1), name='bias')
-            # self.embedding_p = tf.reduce_sum(tf.nn.embedding_lookup(self.embedding_P, self.user_input), 1)
-            # self.embedding_q = tf.reduce_sum(tf.nn.embedding_lookup(self.embedding_Q, self.item_input), 1)
-            # self.bias_i = tf.nn.embedding_lookup(self.bias, self.item_input)
-            # self.coeff = tf.pow(self.num_idx, -tf.constant(self.alpha, tf.float32, [1]))
-            # self.output = tf.sigmoid(self.coeff * tf.expand_dims(tf.reduce_sum(self.embedding_p * self.embedding_q, 1), 1) + self.bias_i)
 
     def _create_loss(self):
         with tf.name_scope('loss'):
